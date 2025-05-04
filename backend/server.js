@@ -117,7 +117,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://dfc9-34-60-232-110.ngrok-free.app/analyze';
+    const flaskURL = 'https://1e6e-34-55-97-77.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -165,7 +165,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://0709-183-82-237-45.ngrok-free.app/search', {
+      const geo = await axios.get('https://c697-183-82-237-45.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
@@ -245,6 +245,28 @@ app.post('/api/generate-pdf', async (req, res) => {
     return res.status(200).json({ url: publicUrl });
   });
 });
+
+// --- Chatbot (RAG) Endpoint ---
+app.post('/api/chat', async (req, res) => {
+  try {
+    console.log("➡️ Received question from app:", req.body.question);
+
+    const response = await axios.post('https://30fa-34-170-107-165.ngrok-free.app/chat', {
+      question: req.body.question,
+    });
+
+    console.log("✅ Flask responded with:", response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error('❌ Error talking to Flask chatbot server:', error.message);
+    if (error.response) {
+      console.error("📦 Flask error response:", error.response.data);
+    }
+    res.status(500).json({ error: 'Failed to get response from chatbot server' });
+  }
+});
+
+
 
 
 // --- Register Routes ---
