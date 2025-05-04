@@ -4,8 +4,6 @@
 // export default function Index() {
 //   return <Redirect href="/Home" />;
 // }
-
-
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Image,
@@ -35,13 +33,6 @@ import * as MediaLibrary from 'expo-media-library';
 //import Icon from 'react-native-vector-icons/MaterialIcons';
 import { MaterialIcons } from '@expo/vector-icons';
 // import ChatbotIcon from './ChatbotIcon';
-
-
-
-  
-
-
-
 
 export default function HomeScreen() 
 {
@@ -1390,11 +1381,11 @@ const sendOtpToEmail = async () => {
           <Text style={styles.locationText}>Email: {email || '[Unknown]'}</Text>
           <Text style={styles.locationText}>Date: {latestUpload.date || '[Not Set]'}</Text>
           <Text style={styles.locationText}>Location: {latestUpload.location}</Text>
-          {aiSummary ? (
+          {/* {aiSummary ? (
             <Text style={{ color: 'white', fontSize: 16, marginBottom: 10 }}>{aiSummary}</Text>
           ) : (
             <Text style={{ color: 'white', fontSize: 14 }}>Generating summary...</Text>
-          )}
+          )} */}
           <Text style={{ color: 'white', fontSize: 16 }}>Message: {message}</Text>
           
           {/* 👇 Optional, keep if you want metadata line */}
