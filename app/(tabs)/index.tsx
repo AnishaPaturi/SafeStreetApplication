@@ -140,7 +140,7 @@ export default function HomeScreen()
         } as any);
 
         console.log('📤 Sending request to Flask server...');
-        const aiResponse = await fetch('https://c697-183-82-237-45.ngrok-free.app/analyze', {
+        const aiResponse = await fetch('https://6a54-103-123-172-99.ngrok-free.app/analyze', {
             method: 'POST',
             body: formData,
             headers: {
@@ -260,7 +260,7 @@ export default function HomeScreen()
     }
   
     try {
-      const response = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/auth/login', {
+      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -296,8 +296,8 @@ export default function HomeScreen()
       Alert.alert('Login Successful', `Welcome, ${data.user.name || 'User'}`);
   
       // ✅ Navigate to correct dashboard
-      if (selectedRole === 'Worker') {
-        setScreen('workerDashboard');
+      if (selectedRole === 'User') {
+        setScreen('UserDashboard');
       } else if (selectedRole === 'Supervisor') {
         setScreen('supervisorDashboard');
       } else {
@@ -351,7 +351,7 @@ export default function HomeScreen()
     }
     
     try {
-      const response = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/auth/signup', {
+      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -516,7 +516,7 @@ const sendOtpToEmail = async () => {
   }
 
   try {
-    const res = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
+    const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -537,7 +537,7 @@ const sendOtpToEmail = async () => {
   // Function to verify OTP
   const verifyOTP = async () => {
     try {
-      const res = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/verify-otp', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -609,7 +609,7 @@ const sendOtpToEmail = async () => {
         type: 'image/jpeg',
       } as any);
   
-      const analyzeRes = await fetch('https://c697-183-82-237-45.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch('https://6a54-103-123-172-99.ngrok-free.app/analyze', {
         method: 'POST',
         body: analyzeFormData,
       });
@@ -640,7 +640,7 @@ const sendOtpToEmail = async () => {
       // ✅ Replacing normal fetch here with XHR for progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://c697-183-82-237-45.ngrok-free.app/api/upload/new');
+        xhr.open('POST', 'https://6a54-103-123-172-99.ngrok-free.app/api/upload/new');
   
         xhr.setRequestHeader('Accept', 'application/json');
   
@@ -677,7 +677,7 @@ const sendOtpToEmail = async () => {
       setLatestUpload({ image: null, location: null, date: '', coordinates: null });
       setNeedsRefresh(true); // ✅ Auto refresh supervisor dashboard
   
-      setScreen('workerDashboard'); // Move to worker dashboard
+      setScreen('UserDashboard'); // Move to User dashboard
   
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -706,7 +706,7 @@ const sendOtpToEmail = async () => {
     }
 
     try {
-      const res = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/reset-password', {
+      const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -728,7 +728,7 @@ const sendOtpToEmail = async () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/upload/all');
+        const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/upload/all');
         const data = await res.json();
         setAllReports(data);
       } catch (err) {
@@ -812,7 +812,7 @@ const sendOtpToEmail = async () => {
   const handleDownloadPdf = async () => {
     try {
       // Fetch the PDF URL from your server
-      const response = await fetch('https://c697-183-82-237-45.ngrok-free.app/generate-pdf', {
+      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/generate-pdf', {
         method: 'POST', // or 'GET', depending on your backend
         headers: {
           'Content-Type': 'application/json',
@@ -841,7 +841,7 @@ const sendOtpToEmail = async () => {
 
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
-      const response = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html, fileName }),
@@ -909,7 +909,7 @@ const sendOtpToEmail = async () => {
             <TouchableOpacity style={styles.authButton} onPress={() => setScreen('login')}>
               <ThemedText type="defaultSemiBold" style={styles.buttonText}>Login</ThemedText>
             </TouchableOpacity>
-            {selectedRole === 'Worker' && (
+            {selectedRole === 'User' && (
               <TouchableOpacity style={styles.authButton} onPress={() => setScreen('signup')}>
                 <ThemedText type="defaultSemiBold" style={styles.buttonText}>Sign Up</ThemedText>
               </TouchableOpacity>
@@ -1068,7 +1068,7 @@ const sendOtpToEmail = async () => {
       {screen === 'signup' && (
         <ScrollView contentContainerStyle={styles.signupScrollContainer}>
         <View style={styles.signupCard}>
-          <Text style={styles.signupTitle}>Worker Sign Up</Text>
+          <Text style={styles.signupTitle}>User Sign Up</Text>
       
           {/* Full Name */}
           <TextInput
@@ -1166,12 +1166,12 @@ const sendOtpToEmail = async () => {
             <TouchableOpacity 
               style={styles.roleButton} 
               onPress={async () => { 
-                await AsyncStorage.setItem('selectedRole', 'Worker'); 
-                setSelectedRole('Worker'); 
+                await AsyncStorage.setItem('selectedRole', 'User'); 
+                setSelectedRole('User'); 
                 setScreen('auth'); 
               }}
             >
-              <ThemedText type="defaultSemiBold" style={styles.buttonText}>Worker</ThemedText>
+              <ThemedText type="defaultSemiBold" style={styles.buttonText}>User</ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -1192,9 +1192,9 @@ const sendOtpToEmail = async () => {
         </View>
       )}
 
-      {screen === 'workerDashboard' && (
-        <View style={styles.workerDashboardContainer}>
-          <ThemedText type="title" style={styles.authTitle}>Worker Dashboard</ThemedText>
+      {screen === 'UserDashboard' && (
+        <View style={styles.UserDashboardContainer}>
+          <ThemedText type="title" style={styles.authTitle}>User Dashboard</ThemedText>
           <TouchableOpacity style={styles.submitButton} onPress={() => setScreen('imageUpload')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Upload a Picture</ThemedText>
           </TouchableOpacity>
@@ -1269,7 +1269,7 @@ const sendOtpToEmail = async () => {
               </TouchableOpacity>
             </View>
           )}
-          <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('workerDashboard')}>
+          <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('UserDashboard')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Back</ThemedText>
           </TouchableOpacity>
         </View>
@@ -1436,7 +1436,7 @@ const sendOtpToEmail = async () => {
                 onRefresh={async () => {
                   setLoadingReports(true);
                   try {
-                    const res = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/upload/all');
+                    const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/upload/all');
                     const data = await res.json();
                     setAllReports(data);
                   } catch (err) {
@@ -1554,7 +1554,7 @@ const sendOtpToEmail = async () => {
                         {/* Image (or Placeholder) */}
                         {report.imageUrl ? (
                             <Image
-                            source={{ uri: `https://c697-183-82-237-45.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `https://6a54-103-123-172-99.ngrok-free.app${report.imageUrl}` }}
                             style={{
                                 width: 60,
                                 height: 60,
@@ -1630,7 +1630,7 @@ const sendOtpToEmail = async () => {
             {/* Image */}
             {selectedReport.imageUrl ? (
               <Image
-                source={{ uri: `https://c697-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `https://6a54-103-123-172-99.ngrok-free.app${selectedReport.imageUrl}` }}
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
               />
@@ -1674,13 +1674,13 @@ const sendOtpToEmail = async () => {
                         <p><strong>Summary:</strong> ${selectedReport.summary}</p>
                         <p><strong>Date:</strong> ${new Date(selectedReport.createdAt).toLocaleString('en-IN')}</p>
                         <p><strong>Status:</strong> ${selectedReport.status}</p>
-                        <img src="https://c697-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
+                        <img src="https://6a54-103-123-172-99.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
                       </body>
                     </html>
                   `;
 
 
-                  const response = await fetch('https://c697-183-82-237-45.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/generate-pdf', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1720,7 +1720,7 @@ const sendOtpToEmail = async () => {
                 style={[styles.submitButton, { backgroundColor: 'green', marginBottom: 20 }]}
                 onPress={async () => {
                   try {
-                    const res = await fetch(`https://c697-183-82-237-45.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
+                    const res = await fetch(`https://6a54-103-123-172-99.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
                     });
@@ -1782,7 +1782,7 @@ const styles = StyleSheet.create({
   AuthContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
   LoginContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
   SignupContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
-  workerDashboardContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
+  UserDashboardContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
   imageUploadContainer: {width: '90%', maxWidth: 400, padding: 20, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
   supervisorViewContainer: { width: '100%', maxWidth: 400, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.7)', padding: 20, borderRadius: 15, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5,},
   linkText: {color: 'white'},
