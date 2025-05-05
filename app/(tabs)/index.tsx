@@ -861,6 +861,17 @@ const sendOtpToEmail = async () => {
     }
   };
   
+  const validReports = allReports
+    .filter(r => typeof r.latitude === 'number' && typeof r.longitude === 'number')
+    .map(r => ({
+      lat: r.latitude,
+      lon: r.longitude,
+      summary: (r.summary || 'No Summary').replace(/'/g, "\\'"),
+      location: (r.location || 'Unknown').replace(/'/g, "\\'")
+    }));
+
+  console.log('🧭 Map Pins:', validReports);
+
   
 
 
@@ -1466,10 +1477,12 @@ const sendOtpToEmail = async () => {
                 <ThemedText type="defaultSemiBold" style={styles.sectionTitle}>
                   Map View
                 </ThemedText>
-
+                
                 <View style={styles.mapBox}>
                 <WebView
                   originWhitelist={['*']}
+                  javaScriptEnabled={true}
+                  style={{ width: '100%', height: 400 }}
                   source={{
                     html: `
                       <!DOCTYPE html>
@@ -1479,39 +1492,43 @@ const sendOtpToEmail = async () => {
                           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
                           <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
                           <style>
-                            html, body { height: 100%; margin: 0; padding: 0; }
-                            #map { width: 100%; height: 100%; }
+                            html, body, #map { height: 100%; margin: 0; padding: 0; }
                           </style>
                         </head>
                         <body>
                           <div id="map"></div>
                           <script>
-                            const map = L.map('map').setView([17.385044, 78.486671], 12);
+                            const reports = ${JSON.stringify(validReports)};
+
+                            const map = L.map('map');
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                               attribution: '&copy; OpenStreetMap contributors'
                             }).addTo(map);
 
-                            const reports = ${JSON.stringify(
-                              allReports
-                                .filter(r => r.latitude && r.longitude)
-                                .map(r => ({
-                                  lat: r.latitude,
-                                  lon: r.longitude,
-                                  summary: r.summary,
-                                  location: r.location,
-                                }))
-                            )};
+                            const markers = [];
 
                             reports.forEach(report => {
-                              L.marker([report.lat, report.lon]).addTo(map)
-                                .bindPopup('<b>' + report.location + '</b><br>' + report.summary);
+                              if (report.lat && report.lon) {
+                                const marker = L.marker([report.lat, report.lon])
+                                  .addTo(map)
+                                  .bindPopup('<b>' + report.location + '</b><br>' + report.summary);
+                                markers.push(marker);
+                              }
                             });
+
+                            if (markers.length > 1) {
+                              const group = new L.featureGroup(markers);
+                              map.fitBounds(group.getBounds().pad(0.2));
+                            } else if (markers.length === 1) {
+                              map.setView([markers[0].getLatLng().lat, markers[0].getLatLng().lng], 14);
+                            } else {
+                              map.setView([17.385044, 78.486671], 12);
+                            }
                           </script>
                         </body>
                       </html>
                     `
                   }}
-                  style={{ width: '100%', height: '100%' }}
                 />
                 </View>
               </View>

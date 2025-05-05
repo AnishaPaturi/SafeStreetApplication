@@ -246,25 +246,25 @@ app.post('/api/generate-pdf', async (req, res) => {
   });
 });
 
-// --- Chatbot (RAG) Endpoint ---
-app.post('/api/chat', async (req, res) => {
-  try {
-    console.log("➡️ Received question from app:", req.body.question);
+// // --- Chatbot (RAG) Endpoint ---
+// app.post('/api/chat', async (req, res) => {
+//   try {
+//     console.log("➡️ Received question from app:", req.body.question);
 
-    const response = await axios.post('https://30fa-34-170-107-165.ngrok-free.app/chat', {
-      question: req.body.question,
-    });
+//     const response = await axios.post('https://30fa-34-170-107-165.ngrok-free.app/chat', {
+//       question: req.body.question,
+//     });
 
-    console.log("✅ Flask responded with:", response.data);
-    res.json(response.data);
-  } catch (error) {
-    console.error('❌ Error talking to Flask chatbot server:', error.message);
-    if (error.response) {
-      console.error("📦 Flask error response:", error.response.data);
-    }
-    res.status(500).json({ error: 'Failed to get response from chatbot server' });
-  }
-});
+//     console.log("✅ Flask responded with:", response.data);
+//     res.json(response.data);
+//   } catch (error) {
+//     console.error('❌ Error talking to Flask chatbot server:', error.message);
+//     if (error.response) {
+//       console.error("📦 Flask error response:", error.response.data);
+//     }
+//     res.status(500).json({ error: 'Failed to get response from chatbot server' });
+//   }
+// });
 
 
 
