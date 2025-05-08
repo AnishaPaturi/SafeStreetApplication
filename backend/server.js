@@ -117,7 +117,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://047f-35-231-157-188.ngrok-free.app/analyze';
+    const flaskURL = 'https://3c48-34-91-94-222.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -165,7 +165,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://6a54-103-123-172-99.ngrok-free.app/search', {
+      const geo = await axios.get('https://1b34-183-82-106-156.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
@@ -225,6 +225,20 @@ app.put('/api/upload/resolve/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to resolve report' });
   }
 });
+
+// --- Get Uploads for a Specific User ---
+app.get('/api/upload/user/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const uploads = await Upload.find({ userId }).sort({ createdAt: -1 });
+    res.json(uploads);
+  } catch (error) {
+    console.error('Error fetching user uploads:', error);
+    res.status(500).json({ error: 'Failed to fetch user uploads' });
+  }
+});
+
+
 
 // --- Generate PDF ---
 app.post('/api/generate-pdf', async (req, res) => {

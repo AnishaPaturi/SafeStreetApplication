@@ -32,6 +32,8 @@ import * as WebBrowser from 'expo-web-browser';
 import * as MediaLibrary from 'expo-media-library';
 //import Icon from 'react-native-vector-icons/MaterialIcons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
 // import ChatbotIcon from './ChatbotIcon';
 
 export default function HomeScreen() 
@@ -47,6 +49,7 @@ export default function HomeScreen()
     latitude?: number;  
     longitude?: number; 
   };
+  
   
   const [screen, setScreen] = useState('home');
   const [email, setEmail] = useState('');
@@ -94,6 +97,9 @@ export default function HomeScreen()
   const [uploading, setUploading] = useState(false);
   const [needsRefresh, setNeedsRefresh] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'user' | 'history'>('login');
+  const [historyData, setHistoryData] = useState<Report[]>([]);
+
 
 
 
@@ -140,7 +146,7 @@ export default function HomeScreen()
         } as any);
 
         console.log('📤 Sending request to Flask server...');
-        const aiResponse = await fetch('https://6a54-103-123-172-99.ngrok-free.app/analyze', {
+        const aiResponse = await fetch('https://1b34-183-82-106-156.ngrok-free.app/analyze', {
             method: 'POST',
             body: formData,
             headers: {
@@ -260,7 +266,7 @@ export default function HomeScreen()
     }
   
     try {
-      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/auth/login', {
+      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -351,7 +357,7 @@ export default function HomeScreen()
     }
     
     try {
-      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/auth/signup', {
+      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -516,7 +522,7 @@ const sendOtpToEmail = async () => {
   }
 
   try {
-    const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
+    const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -537,7 +543,7 @@ const sendOtpToEmail = async () => {
   // Function to verify OTP
   const verifyOTP = async () => {
     try {
-      const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/verify-otp', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -609,7 +615,7 @@ const sendOtpToEmail = async () => {
         type: 'image/jpeg',
       } as any);
   
-      const analyzeRes = await fetch('https://6a54-103-123-172-99.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch('https://1b34-183-82-106-156.ngrok-free.app/analyze', {
         method: 'POST',
         body: analyzeFormData,
       });
@@ -640,7 +646,7 @@ const sendOtpToEmail = async () => {
       // ✅ Replacing normal fetch here with XHR for progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://6a54-103-123-172-99.ngrok-free.app/api/upload/new');
+        xhr.open('POST', 'https://1b34-183-82-106-156.ngrok-free.app/api/upload/new');
   
         xhr.setRequestHeader('Accept', 'application/json');
   
@@ -706,7 +712,7 @@ const sendOtpToEmail = async () => {
     }
 
     try {
-      const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/reset-password', {
+      const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -728,7 +734,7 @@ const sendOtpToEmail = async () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/upload/all');
+        const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/upload/all');
         const data = await res.json();
         setAllReports(data);
       } catch (err) {
@@ -812,7 +818,7 @@ const sendOtpToEmail = async () => {
   const handleDownloadPdf = async () => {
     try {
       // Fetch the PDF URL from your server
-      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/generate-pdf', {
+      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/generate-pdf', {
         method: 'POST', // or 'GET', depending on your backend
         headers: {
           'Content-Type': 'application/json',
@@ -841,7 +847,7 @@ const sendOtpToEmail = async () => {
 
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
-      const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html, fileName }),
@@ -872,8 +878,28 @@ const sendOtpToEmail = async () => {
 
   console.log('🧭 Map Pins:', validReports);
 
+  useEffect(() => {
+    const fetchUserHistory = async () => {
+      try {
+        const userId = await AsyncStorage.getItem('userId');
+        console.log('📦 Fetching reports for userId:', userId);
+        if (!userId) {
+          console.warn('User ID not found');
+          return;
+        }
+        const res = await fetch(`https://1b34-183-82-106-156.ngrok-free.app/api/upload/user/${userId}`);
+        const data = await res.json();
+        setHistoryData(data);
+      } catch (error) {
+        console.error('Error fetching user history:', error);
+      }
+    };
   
-
+    if (screen === 'history') {
+      fetchUserHistory();
+    }
+  }, [screen]);
+  
 
   
   
@@ -1198,11 +1224,61 @@ const sendOtpToEmail = async () => {
           <TouchableOpacity style={styles.submitButton} onPress={() => setScreen('imageUpload')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Upload a Picture</ThemedText>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.submitButton} onPress={() => setScreen('history')}>
+            <ThemedText type="defaultSemiBold" style={styles.buttonText}>View History</ThemedText>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('roleSelection')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Back</ThemedText>
           </TouchableOpacity>
         </View>
       )}
+      {screen === 'history' && (
+      <>
+        <TouchableOpacity onPress={() => setScreen('UserDashboard')} style={{ marginBottom: 20 }}>
+          <Ionicons name="arrow-back" size={28} color="#fff" />
+        </TouchableOpacity>
+
+        <Text style={{ color: '#fff', fontSize: 32, fontWeight: 'bold', marginBottom: 10 }}>
+          My Report History
+        </Text>
+
+        <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+          {historyData.length === 0 ? (
+            <Text style={{ color: '#94a3b8', fontSize: 16, textAlign: 'center' }}>
+              No reports submitted yet.
+            </Text>
+          ) : (
+            historyData.map((item, index) => (
+              <View
+                key={item._id || index}
+                style={{
+                  backgroundColor: '#334155',
+                  borderRadius: 16,
+                  padding: 16,
+                  marginBottom: 16,
+                }}
+              >
+                {item.imageUrl && (
+                  <Image
+                    source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${item.imageUrl}` }}
+                    style={{ width: '100%', height: 180, borderRadius: 10, marginBottom: 10 }}
+                  />
+                )}
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
+                  📍 {item.location}
+                </Text>
+                <Text style={{ color: '#ccc', marginTop: 6, fontSize: 12 }}>
+                  🕑 {new Date(item.createdAt).toLocaleString()}
+                </Text>
+              </View>
+            ))
+          )}
+          <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('UserDashboard')}>
+            <ThemedText type="defaultSemiBold" style={styles.buttonText}>Back</ThemedText>
+          </TouchableOpacity>
+        </ScrollView>
+      </>
+    )}
       {screen === 'imageUpload' && (
         <View style={styles.imageUploadContainer}>
           {!image && (
@@ -1436,7 +1512,7 @@ const sendOtpToEmail = async () => {
                 onRefresh={async () => {
                   setLoadingReports(true);
                   try {
-                    const res = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/upload/all');
+                    const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/upload/all');
                     const data = await res.json();
                     setAllReports(data);
                   } catch (err) {
@@ -1554,7 +1630,7 @@ const sendOtpToEmail = async () => {
                         {/* Image (or Placeholder) */}
                         {report.imageUrl ? (
                             <Image
-                            source={{ uri: `https://6a54-103-123-172-99.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${report.imageUrl}` }}
                             style={{
                                 width: 60,
                                 height: 60,
@@ -1630,7 +1706,7 @@ const sendOtpToEmail = async () => {
             {/* Image */}
             {selectedReport.imageUrl ? (
               <Image
-                source={{ uri: `https://6a54-103-123-172-99.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}` }}
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
               />
@@ -1674,13 +1750,13 @@ const sendOtpToEmail = async () => {
                         <p><strong>Summary:</strong> ${selectedReport.summary}</p>
                         <p><strong>Date:</strong> ${new Date(selectedReport.createdAt).toLocaleString('en-IN')}</p>
                         <p><strong>Status:</strong> ${selectedReport.status}</p>
-                        <img src="https://6a54-103-123-172-99.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
+                        <img src="https://1b34-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
                       </body>
                     </html>
                   `;
 
 
-                  const response = await fetch('https://6a54-103-123-172-99.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/generate-pdf', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1720,7 +1796,7 @@ const sendOtpToEmail = async () => {
                 style={[styles.submitButton, { backgroundColor: 'green', marginBottom: 20 }]}
                 onPress={async () => {
                   try {
-                    const res = await fetch(`https://6a54-103-123-172-99.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
+                    const res = await fetch(`https://1b34-183-82-106-156.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
                     });
