@@ -146,7 +146,7 @@ export default function HomeScreen()
         } as any);
 
         console.log('📤 Sending request to Flask server...');
-        const aiResponse = await fetch('https://1b34-183-82-106-156.ngrok-free.app/analyze', {
+        const aiResponse = await fetch('https://0653-183-82-106-156.ngrok-free.app/analyze', {
             method: 'POST',
             body: formData,
             headers: {
@@ -198,31 +198,6 @@ export default function HomeScreen()
     }
   }, [screen]);
   
-  // useEffect(() => {
-  //   const testNgrok = async () => {
-  //     try {
-  //       const formData = new FormData(); // Intentionally empty — will return "no image"
-  //       const res = await fetch('https://aa1f-34-106-205-175.ngrok-free.app/analyze', {
-  //         method: 'POST',
-  //         headers: {
-  //           Accept: 'application/json',
-  //         },
-  //         body: formData,
-  //       });
-  
-  //       const json = await res.json();
-  //       console.log('✅ Ngrok test success:', json);
-  //       Alert.alert('Success 🎉', JSON.stringify(json));
-  //     } catch (err) {
-  //       const msg = err instanceof Error ? err.message : JSON.stringify(err);
-  //       console.error('❌ Ngrok test fetch error:', msg);
-  //       Alert.alert('Test Failed ❌', msg);
-  //     }
-  //   };
-  
-  //   testNgrok();
-  // }, []);
-  
   
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -249,11 +224,7 @@ export default function HomeScreen()
       return;
     }
   
-    // ✅ Restrict Supervisor to specific password
-    // if (selectedRole === 'Supervisor' && password !== 'SafeStreet@1$') {
-    //   Alert.alert('Access Denied', 'Incorrect password for Supervisor.');
-    //   return;
-    // }
+
   
     if (!email.includes('@')) {
       setErrorMessage('Email must contain @');
@@ -266,7 +237,7 @@ export default function HomeScreen()
     }
   
     try {
-      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/auth/login', {
+      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -357,7 +328,7 @@ export default function HomeScreen()
     }
     
     try {
-      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/auth/signup', {
+      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -522,7 +493,7 @@ const sendOtpToEmail = async () => {
   }
 
   try {
-    const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
+    const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -543,7 +514,7 @@ const sendOtpToEmail = async () => {
   // Function to verify OTP
   const verifyOTP = async () => {
     try {
-      const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/verify-otp', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -615,7 +586,7 @@ const sendOtpToEmail = async () => {
         type: 'image/jpeg',
       } as any);
   
-      const analyzeRes = await fetch('https://1b34-183-82-106-156.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch('https://0653-183-82-106-156.ngrok-free.app/analyze', {
         method: 'POST',
         body: analyzeFormData,
       });
@@ -646,7 +617,7 @@ const sendOtpToEmail = async () => {
       // ✅ Replacing normal fetch here with XHR for progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://1b34-183-82-106-156.ngrok-free.app/api/upload/new');
+        xhr.open('POST', 'https://0653-183-82-106-156.ngrok-free.app/api/upload/new');
   
         xhr.setRequestHeader('Accept', 'application/json');
   
@@ -712,7 +683,7 @@ const sendOtpToEmail = async () => {
     }
 
     try {
-      const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/reset-password', {
+      const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -734,7 +705,7 @@ const sendOtpToEmail = async () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/upload/all');
+        const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/upload/all');
         const data = await res.json();
         setAllReports(data);
       } catch (err) {
@@ -818,7 +789,7 @@ const sendOtpToEmail = async () => {
   const handleDownloadPdf = async () => {
     try {
       // Fetch the PDF URL from your server
-      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/generate-pdf', {
+      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/generate-pdf', {
         method: 'POST', // or 'GET', depending on your backend
         headers: {
           'Content-Type': 'application/json',
@@ -847,7 +818,7 @@ const sendOtpToEmail = async () => {
 
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
-      const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html, fileName }),
@@ -876,7 +847,7 @@ const sendOtpToEmail = async () => {
       location: (r.location || 'Unknown').replace(/'/g, "\\'")
     }));
 
-  console.log('🧭 Map Pins:', validReports);
+  // console.log('🧭 Map Pins:', validReports);
 
   useEffect(() => {
     const fetchUserHistory = async () => {
@@ -887,7 +858,7 @@ const sendOtpToEmail = async () => {
           console.warn('User ID not found');
           return;
         }
-        const res = await fetch(`https://1b34-183-82-106-156.ngrok-free.app/api/upload/user/${userId}`);
+        const res = await fetch(`https://0653-183-82-106-156.ngrok-free.app/api/upload/user/${userId}`);
         const data = await res.json();
         setHistoryData(data);
       } catch (error) {
@@ -899,6 +870,41 @@ const sendOtpToEmail = async () => {
       fetchUserHistory();
     }
   }, [screen]);
+  
+  const sendToAuthorities = async (report: Report) => {
+    try {
+      const res = await fetch('http://192.168.3.138:8000/api/receive-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageUrl: `https://0653-183-82-106-156.ngrok-free.app${report.imageUrl}`,
+          location: report.location,
+          summary: report.summary,
+          date: report.createdAt,
+          status: report.status || 'Pending',
+        }),
+      });
+  
+      const text = await res.text();
+      console.log('📦 Raw response:', text);
+  
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        throw new Error('Server did not return valid JSON.');
+      }
+  
+      if (!res.ok) throw new Error(data.message || 'Failed to send report');
+  
+      Alert.alert('✅ Sent!', 'Report sent to authorities successfully');
+    } catch (err) {
+      console.error('❌ Send error:', err);
+      Alert.alert('Error', err.message || 'Something went wrong');
+    }
+  };
   
 
   
@@ -1260,7 +1266,7 @@ const sendOtpToEmail = async () => {
               >
                 {item.imageUrl && (
                   <Image
-                    source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${item.imageUrl}` }}
+                    source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${item.imageUrl}` }}
                     style={{ width: '100%', height: 180, borderRadius: 10, marginBottom: 10 }}
                   />
                 )}
@@ -1411,6 +1417,12 @@ const sendOtpToEmail = async () => {
                   console.log('Clicked Coordinates:', lat, lng);
                   setSelectedLocation({ latitude: lat, longitude: lng });
 
+                  const { status } = await Location.requestForegroundPermissionsAsync();
+                  if (status !== 'granted') {
+                    Alert.alert('Permission Denied', 'Location permission is required to reverse geocode.');
+                    return;
+                  }
+
                   const [addr] = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lng });
                   const fullAddress = `${addr.name ? addr.name + ', ' : ''}${addr.street ? addr.street + ', ' : ''}${addr.postalCode ? addr.postalCode + ', ' : ''}${addr.city ? addr.city + ', ' : ''}${addr.region ? addr.region + ', ' : ''}${addr.country ? addr.country : ''}`;
 
@@ -1512,7 +1524,7 @@ const sendOtpToEmail = async () => {
                 onRefresh={async () => {
                   setLoadingReports(true);
                   try {
-                    const res = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/upload/all');
+                    const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/upload/all');
                     const data = await res.json();
                     setAllReports(data);
                   } catch (err) {
@@ -1630,7 +1642,7 @@ const sendOtpToEmail = async () => {
                         {/* Image (or Placeholder) */}
                         {report.imageUrl ? (
                             <Image
-                            source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${report.imageUrl}` }}
                             style={{
                                 width: 60,
                                 height: 60,
@@ -1692,7 +1704,7 @@ const sendOtpToEmail = async () => {
       {screen === 'supervisorReportView' && selectedReport && (
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <View style={{
-            width: '100%',
+            width: '90%',
             maxWidth: 400,
             alignSelf: 'center',
             alignItems: 'center',
@@ -1706,7 +1718,7 @@ const sendOtpToEmail = async () => {
             {/* Image */}
             {selectedReport.imageUrl ? (
               <Image
-                source={{ uri: `https://1b34-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}` }}
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
               />
@@ -1750,13 +1762,13 @@ const sendOtpToEmail = async () => {
                         <p><strong>Summary:</strong> ${selectedReport.summary}</p>
                         <p><strong>Date:</strong> ${new Date(selectedReport.createdAt).toLocaleString('en-IN')}</p>
                         <p><strong>Status:</strong> ${selectedReport.status}</p>
-                        <img src="https://1b34-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
+                        <img src="https://0653-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
                       </body>
                     </html>
                   `;
 
 
-                  const response = await fetch('https://1b34-183-82-106-156.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/generate-pdf', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1786,17 +1798,16 @@ const sendOtpToEmail = async () => {
             >
               <Text style={styles.buttonText}>Download Summary as PDF</Text>
             </TouchableOpacity>
-
-
-
-
+            <TouchableOpacity style={styles.button} onPress={() => sendToAuthorities(selectedReport)}>
+              <Text style={styles.buttonText}>Send to Authorities</Text>
+            </TouchableOpacity>
             {/* Resolve Button */}
             {selectedReport.status !== 'Resolved' && (
               <TouchableOpacity
                 style={[styles.submitButton, { backgroundColor: 'green', marginBottom: 20 }]}
                 onPress={async () => {
                   try {
-                    const res = await fetch(`https://1b34-183-82-106-156.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
+                    const res = await fetch(`https://0653-183-82-106-156.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
                     });
@@ -1818,7 +1829,6 @@ const sendOtpToEmail = async () => {
                 <ThemedText type="defaultSemiBold" style={styles.buttonText}>Mark as Resolved</ThemedText>
               </TouchableOpacity>
             )}
-
             {/* Back Button */}
             <TouchableOpacity
               style={styles.authBackButton}

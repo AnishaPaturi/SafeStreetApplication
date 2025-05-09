@@ -117,7 +117,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://3c48-34-91-94-222.ngrok-free.app/analyze';
+    const flaskURL = 'https://da46-34-23-224-84.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -165,7 +165,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://1b34-183-82-106-156.ngrok-free.app/search', {
+      const geo = await axios.get('https://0653-183-82-106-156.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
@@ -265,7 +265,7 @@ app.post('/api/generate-pdf', async (req, res) => {
 //   try {
 //     console.log("➡️ Received question from app:", req.body.question);
 
-//     const response = await axios.post('https://30fa-34-170-107-165.ngrok-free.app/chat', {
+//     const response = await axios.post('https://8222-113-193-19-90.ngrok-free.app/chat', {
 //       question: req.body.question,
 //     });
 
