@@ -27,14 +27,14 @@ import { ScrollView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { ActivityIndicator } from 'react-native';
 import { RefreshControl } from 'react-native';
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import * as WebBrowser from 'expo-web-browser';
-import * as MediaLibrary from 'expo-media-library';
-//import Icon from 'react-native-vector-icons/MaterialIcons';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-
+//import TopNavBar from '@/components/TopNavBar';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
+// import * as MediaLibrary from 'expo-media-library';
 // import ChatbotIcon from './ChatbotIcon';
+//import Icon from 'react-native-vector-icons/MaterialIcons';
+// import { MaterialIcons } from '@expo/vector-icons';
 
 export default function HomeScreen() 
 {
@@ -57,19 +57,18 @@ export default function HomeScreen()
   const [errorMessage, setErrorMessage] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const [location, setLocation] = useState<string | null>(null);
-  // State for sign-up fields
-  const [fullName, setFullName] = useState('');
+    const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [occupation, setOccupation] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [latestUpload, setLatestUpload] = useState<{
+  const [latestUpload, setLatestUpload] = useState<
+  {
     image: string | null;
     location: string | null;
     date: string;
     coordinates?: { latitude: number; longitude: number } | null;
   }>({ image: null, location: null, date: '', coordinates: null });
-  // Animations
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const textOpacity = useRef(new Animated.Value(0)).current;
   const buttonOpacity = useRef(new Animated.Value(0)).current;
@@ -99,9 +98,8 @@ export default function HomeScreen()
   const [uploadProgress, setUploadProgress] = useState(0);
   const [currentScreen, setCurrentScreen] = useState<'login' | 'user' | 'history'>('login');
   const [historyData, setHistoryData] = useState<Report[]>([]);
-
-
-
+  const [summaryProgress, setSummaryProgress] = useState(0); // 0 to 100
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
 
  
   useEffect(() => {
@@ -117,6 +115,7 @@ export default function HomeScreen()
       });
     });
   }, []);
+
   const convertUriIfNeeded = async (uri: string): Promise<string> => {
     if (uri && uri.startsWith('content://')) {
       const newPath = FileSystem.cacheDirectory + 'converted.jpg';
@@ -125,71 +124,82 @@ export default function HomeScreen()
     }
     return uri;
   };
+
   const fetchAISummary = async (): Promise<void> => {
-    try {
-        console.log('🧠 Starting fetchAISummary');
-        console.log('Original Image URI:', latestUpload.image);
+  let interval: NodeJS.Timeout | null = null;
+  try {
+    console.log('🧠 Starting fetchAISummary');
+    console.log('Original Image URI:', latestUpload.image);
 
-        if (!latestUpload.image) {
-            Alert.alert("Error", "No image selected.");
-            return;
-        }
-
-        const imageUri = await convertUriIfNeeded(latestUpload.image);
-        console.log('✅ Processed Image URI:', imageUri);
-
-        const formData = new FormData();
-        formData.append('image', {
-            uri: imageUri,
-            name: 'photo.jpg',
-            type: 'image/jpeg',
-        } as any);
-
-        console.log('📤 Sending request to Flask server...');
-        const aiResponse = await fetch('https://0653-183-82-106-156.ngrok-free.app/analyze', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Accept: 'application/json',
-            },
-        });
-
-        if (!aiResponse.ok) {
-            const errorText = await aiResponse.text();
-            console.error('🔥 Server Error:', errorText);
-            throw new Error(`Server Error: ${errorText}`);
-        }
-
-        const contentType = aiResponse.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            const data = await aiResponse.json();
-            console.log('✅ AI Response:', data);
-            console.log('✅ Full AI Response:', data);
-            // Read data and parse into the summary and print
-
-            // Parse summary intoCaption  severity and priority 
-            console.log('Full data',data);
-            console.log('📍 Summary:', data.data.summary); 
-            console.log('📍 Message:', data.message);
-
-            // Use the summary or caption if summary is not available
-            setAiSummary(data.data.summary || '[No summary returned]');
-            setMessage(data.message);
-            // Automatically upload to server so supervisor can see it
-            await uploadToServer();
-
-        } else {
-            const rawText = await aiResponse.text();
-            console.warn('⚠️ Unexpected response:', rawText);
-            throw new Error(`Unexpected response format: ${rawText}`);
-        }
-
-    } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : 'Unknown error';
-        console.error('⚠️ AI Summary Fetch Error:', msg);
-        setAiSummary('[Error generating summary: ' + msg + ']');
+    if (!latestUpload.image) {
+      Alert.alert("Error", "No image selected.");
+      return;
     }
-  };
+
+    setIsGeneratingSummary(true);
+    setSummaryProgress(0);
+
+    // Simulate summary generation progress
+    interval = setInterval(() => {
+      setSummaryProgress((prev) => (prev < 90 ? prev + 10 : prev));
+    }, 300);
+
+    const imageUri = await convertUriIfNeeded(latestUpload.image);
+    console.log('✅ Processed Image URI:', imageUri);
+
+    const formData = new FormData();
+    formData.append('image', {
+      uri: imageUri,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+    } as any);
+
+    console.log('📤 Sending request to Flask server...');
+    const aiResponse = await fetch('https://8055-183-82-237-45.ngrok-free.app/analyze', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error('🔥 Server Error:', errorText);
+      throw new Error(`Server Error: ${errorText}`);
+    }
+
+    const contentType = aiResponse.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const data = await aiResponse.json();
+      console.log('✅ AI Response:', data);
+      console.log('📍 Summary:', data.data.summary); 
+      console.log('📍 Message:', data.message);
+
+      setAiSummary(data.data.summary || '[No summary returned]');
+      setMessage(data.message);
+
+      clearInterval(interval);
+      setSummaryProgress(100);
+      setIsGeneratingSummary(false);
+
+      //await uploadToServer();
+    } else {
+      const rawText = await aiResponse.text();
+      console.warn('⚠️ Unexpected response:', rawText);
+      throw new Error(`Unexpected response format: ${rawText}`);
+    }
+  } catch (err: unknown) {
+    if (interval) clearInterval(interval);
+    setSummaryProgress(0);
+    setIsGeneratingSummary(false);
+
+    const msg = err instanceof Error ? err.message : 'Unknown error';
+    console.error('⚠️ AI Summary Fetch Error:', msg);
+    setAiSummary('[Error generating summary: ' + msg + ']');
+  }
+};
+
   
   useEffect(() => {
     if (screen === 'summary' && latestUpload.image) {
@@ -197,7 +207,6 @@ export default function HomeScreen()
       fetchAISummary(); // This causes the error if fetchAISummary is defined below
     }
   }, [screen]);
-  
   
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -218,13 +227,10 @@ export default function HomeScreen()
       return;
     }
   
-    // ✅ Restrict Supervisor to specific email
     if (selectedRole === 'Supervisor' && email.toLowerCase() !== 'safestreet3@gmail.com') {
       Alert.alert('Access Denied', 'Only the authorized Supervisor email can log in.');
       return;
     }
-  
-
   
     if (!email.includes('@')) {
       setErrorMessage('Email must contain @');
@@ -237,12 +243,12 @@ export default function HomeScreen()
     }
   
     try {
-      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/auth/login', {
+      const response = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const text = await response.text();
       let data;
       try {
@@ -262,17 +268,14 @@ export default function HomeScreen()
         throw new Error('User not found in response');
       }
   
-      // ✅ Save the userId into AsyncStorage
       await AsyncStorage.setItem('userId', data.user._id);
   
-      // ✅ Save name and email into state
+    
       setFullName(data.user.name || '');
       setEmail(data.user.email || '');
   
-      // ✅ Show success message
       Alert.alert('Login Successful', `Welcome, ${data.user.name || 'User'}`);
   
-      // ✅ Navigate to correct dashboard
       if (selectedRole === 'User') {
         setScreen('UserDashboard');
       } else if (selectedRole === 'Supervisor') {
@@ -303,32 +306,28 @@ export default function HomeScreen()
   const validateAndSignUp = async () => {
     console.log('Sign Up button clicked ✅');
   
-    // ✅ Check if all fields are filled
     if (!fullName || !phoneNumber || !email || !occupation || !password || !confirmPassword) {
       Alert.alert('Error', 'All fields are required!');
       return;
     }
   
-    // ✅ Validate email
     if (!email.includes('@')) {
       Alert.alert('Error', 'Email must contain @');
       return;
     }
-  
-    // ✅ Validate password
+
     if (password.length < 8 || !/\d/.test(password)) {
       Alert.alert('Error', 'Password must be at least 8 characters long and contain at least one number');
       return;
     }
   
-    // ✅ Confirm passwords match
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match');
       return;
     }
     
     try {
-      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/auth/signup', {
+      const response = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -351,11 +350,9 @@ export default function HomeScreen()
         setSelectedLocation({ latitude: region.latitude, longitude: region.longitude });
         
         const address = await getAddressFromCoords(region);
-        setSelectedAddress(address); // You’ll need to add this to state
+        setSelectedAddress(address);
       };
       
-  
-      // ✅ Try parsing response as JSON safely
       const text = await response.text();
       let data;
       try {
@@ -451,7 +448,7 @@ export default function HomeScreen()
 
   <TouchableOpacity
     style={styles.getLocationButton}
-    onPress={() => getCoordsFromAddress(address)} // 👈 call the function
+    onPress={() => getCoordsFromAddress(address)}
   >
     <ThemedText type="defaultSemiBold" style={styles.buttonText}>Get Address</ThemedText>
   </TouchableOpacity>
@@ -482,7 +479,7 @@ export default function HomeScreen()
       setScreen('imageUpload');
     }}
   >
-    <ThemedText type="defaultSemiBold" style={styles.buttonText}>Done</ThemedText>
+    <ThemedText type="defaultSemiBold" style={styles.button}>Done</ThemedText>
   </TouchableOpacity>
 </View>
 
@@ -493,7 +490,7 @@ const sendOtpToEmail = async () => {
   }
 
   try {
-    const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/send-otp', { // ✅ Corrected URL
+    const res = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/send-otp', { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -503,7 +500,7 @@ const sendOtpToEmail = async () => {
     if (!res.ok) return Alert.alert('Error', data.error || 'Something went wrong');
 
     Alert.alert('OTP Sent ✅', 'Check your email for the OTP');
-    setScreen('otpVerification'); // ✅ After sending OTP, move to OTP screen
+    setScreen('otpVerification'); 
   } catch (err) {
     console.error('Send OTP Error:', err);
     Alert.alert('Error', 'Server error');
@@ -514,7 +511,7 @@ const sendOtpToEmail = async () => {
   // Function to verify OTP
   const verifyOTP = async () => {
     try {
-      const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/verify-otp', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -524,13 +521,12 @@ const sendOtpToEmail = async () => {
       if (!res.ok) return Alert.alert('Error', data.error || 'Invalid OTP');
   
       Alert.alert('Verified!', 'OTP verified successfully');
-      setScreen('resetPassword'); // ✅ Move to Reset Password Screen
+      setScreen('resetPassword'); 
     } catch (err) {
       console.error('Verify OTP Error:', err);
       Alert.alert('Error', 'Server error');
     }
   };
-  
   
 
   const handleSummaryClick = () => {
@@ -575,8 +571,8 @@ const sendOtpToEmail = async () => {
         return;
       }
   
-      setUploading(true); // show spinner
-      setUploadProgress(0); // reset upload progress
+      setUploading(true); 
+      setUploadProgress(0); 
   
       // Step 1: Analyze Image
       const analyzeFormData = new FormData();
@@ -586,7 +582,7 @@ const sendOtpToEmail = async () => {
         type: 'image/jpeg',
       } as any);
   
-      const analyzeRes = await fetch('https://0653-183-82-106-156.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch('https://8055-183-82-237-45.ngrok-free.app/analyze', {
         method: 'POST',
         body: analyzeFormData,
       });
@@ -617,7 +613,7 @@ const sendOtpToEmail = async () => {
       // ✅ Replacing normal fetch here with XHR for progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://0653-183-82-106-156.ngrok-free.app/api/upload/new');
+        xhr.open('POST', 'https://8055-183-82-237-45.ngrok-free.app/api/upload/new');
   
         xhr.setRequestHeader('Accept', 'application/json');
   
@@ -645,14 +641,32 @@ const sendOtpToEmail = async () => {
         xhr.send(uploadFormData);
       });
   
-      Alert.alert("Success 🎉", "Upload sent successfully to Supervisor!");
-  
-      // ✅ Clear form after upload
-      setImage(null);
-      setAddress('');
-      setLocation(null);
-      setLatestUpload({ image: null, location: null, date: '', coordinates: null });
-      setNeedsRefresh(true); // ✅ Auto refresh supervisor dashboard
+      Alert.alert(
+      "Success 🎉",
+      "Upload sent successfully to Supervisor!\n\nDo you want to logout?",
+      [
+        {
+          text: "Stay",
+          onPress: () => {
+            setScreen('UserDashboard');
+          },
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          onPress: logout,
+          style: "destructive",
+        },
+      ]
+    );
+
+    // Clear form after upload
+    setImage(null);
+    setAddress('');
+    setLocation(null);
+    setLatestUpload({ image: null, location: null, date: '', coordinates: null });
+    setNeedsRefresh(true);
+
   
       setScreen('UserDashboard'); // Move to User dashboard
   
@@ -683,7 +697,7 @@ const sendOtpToEmail = async () => {
     }
 
     try {
-      const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/reset-password', {
+      const res = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -705,7 +719,7 @@ const sendOtpToEmail = async () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/upload/all');
+        const res = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/upload/all');
         const data = await res.json();
         setAllReports(data);
       } catch (err) {
@@ -782,14 +796,10 @@ const sendOtpToEmail = async () => {
     }
   };
   
-
-
-
-
   const handleDownloadPdf = async () => {
     try {
       // Fetch the PDF URL from your server
-      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/generate-pdf', {
+      const response = await fetch('https://8055-183-82-237-45.ngrok-free.app/generate-pdf', {
         method: 'POST', // or 'GET', depending on your backend
         headers: {
           'Content-Type': 'application/json',
@@ -818,7 +828,7 @@ const sendOtpToEmail = async () => {
 
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
-      const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html, fileName }),
@@ -858,7 +868,7 @@ const sendOtpToEmail = async () => {
           console.warn('User ID not found');
           return;
         }
-        const res = await fetch(`https://0653-183-82-106-156.ngrok-free.app/api/upload/user/${userId}`);
+        const res = await fetch(`https://8055-183-82-237-45.ngrok-free.app/api/upload/user/${userId}`);
         const data = await res.json();
         setHistoryData(data);
       } catch (error) {
@@ -879,7 +889,7 @@ const sendOtpToEmail = async () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          imageUrl: `https://0653-183-82-106-156.ngrok-free.app${report.imageUrl}`,
+          imageUrl: `https://8055-183-82-237-45.ngrok-free.app${report.imageUrl}`,
           location: report.location,
           summary: report.summary,
           date: report.createdAt,
@@ -911,6 +921,14 @@ const sendOtpToEmail = async () => {
   
   return (
     <ImageBackground source={require('@/assets/images/potholeclick.png')} style={styles.background}>
+      {/* <TopNavBar
+        isLoggedIn={screen !== 'login' && screen !== 'signup' && screen !== 'home' && screen !== 'auth'}
+        onNavigate={(target) => {
+          if (target === 'logout') logout();
+          else setScreen(target);
+        }}
+        fullName={fullName}
+      /> */}
       {screen === 'home' && (
         <ImageBackground source={require('@/assets/images/potholeclick.png')} style={styles.background}>
           <View style={styles.HomeContainer}>
@@ -1266,7 +1284,7 @@ const sendOtpToEmail = async () => {
               >
                 {item.imageUrl && (
                   <Image
-                    source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${item.imageUrl}` }}
+                    source={{ uri: `https://8055-183-82-237-45.ngrok-free.app${item.imageUrl}` }}
                     style={{ width: '100%', height: 180, borderRadius: 10, marginBottom: 10 }}
                   />
                 )}
@@ -1443,7 +1461,6 @@ const sendOtpToEmail = async () => {
           )}
 
           <TouchableOpacity
-            style={styles.getLocationButton}
             onPress={() => {
               if (!address) {
                 Alert.alert("Error", "Please select a location by clicking on the map.");
@@ -1456,18 +1473,13 @@ const sendOtpToEmail = async () => {
               setScreen('imageUpload');
             }}
           >
-            <ThemedText type="defaultSemiBold" style={styles.buttonText}>Done</ThemedText>
+            <ThemedText type="defaultSemiBold" style={styles.button}>Done</ThemedText>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.manual_backButton}
-            onPress={() => setScreen('imageUpload')}
-          >
+          <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('imageUpload')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Back</ThemedText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.authBackButton} onPress={logout}>
-            <ThemedText type="defaultSemiBold" style={styles.buttonText}>Logout</ThemedText>
-          </TouchableOpacity>
+    
+          
 
         </View>
       )}
@@ -1480,24 +1492,56 @@ const sendOtpToEmail = async () => {
           <Text style={styles.locationText}>Email: {email || '[Unknown]'}</Text>
           <Text style={styles.locationText}>Date: {latestUpload.date || '[Not Set]'}</Text>
           <Text style={styles.locationText}>Location: {latestUpload.location}</Text>
-          {/* {aiSummary ? (
-            <Text style={{ color: 'white', fontSize: 16, marginBottom: 10 }}>{aiSummary}</Text>
-          ) : (
-            <Text style={{ color: 'white', fontSize: 14 }}>Generating summary...</Text>
-          )} */}
-          <Text style={{ color: 'white', fontSize: 16 }}>Message: {message}</Text>
-          
-          {/* 👇 Optional, keep if you want metadata line */}
-          {/* <TouchableOpacity style={styles.uploadButton} onPress={uploadToServer}>
-            <ThemedText type="defaultSemiBold" style={styles.buttonText}>Upload</ThemedText>
-          </TouchableOpacity> */}
-          {uploading ? (
-            <ActivityIndicator size="large" color="#00ff00" style={{ marginTop: 20 }} />
-          ) : (
+
+          <Text style={{ color: 'white', fontSize: 16 }}>{message}</Text>
+
+          {/* ✅ Progress Bar: Generating Summary */}
+          {isGeneratingSummary && (
+            <View style={{ width: '100%', marginTop: 15 }}>
+              <Text style={{ color: '#fff', marginBottom: 4 }}>Generating Summary...</Text>
+              <View style={{ height: 10, backgroundColor: '#555', borderRadius: 5 }}>
+                <View
+                  style={{
+                    height: 10,
+                    width: `${summaryProgress}%`,
+                    backgroundColor: 'orange',
+                    borderRadius: 5,
+                  }}
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ✅ Progress Bar: Uploading Report */}
+          {uploading && (
+            <View style={{ width: '100%', marginTop: 15, paddingHorizontal: 20 }}>
+              <Text style={{ color: '#fff', marginBottom: 4 }}>
+                Uploading: {uploadProgress}%
+              </Text>
+              <View style={{
+                height: 10,
+                backgroundColor: '#ccc',
+                borderRadius: 5,
+                overflow: 'hidden',
+              }}>
+                <View style={{
+                  width: `${uploadProgress}%`,
+                  height: '100%',
+                  backgroundColor: '#00ff00',
+                }} />
+              </View>
+            </View>
+          )}
+
+
+          {/* ✅ Upload button (disabled when summary is generating or upload in progress) */}
+          {!isGeneratingSummary && !uploading && (
             <TouchableOpacity style={styles.uploadButton} onPress={uploadToServer}>
               <ThemedText type="defaultSemiBold" style={styles.buttonText}>Upload</ThemedText>
             </TouchableOpacity>
           )}
+
+          {/* ✅ Back button */}
           <TouchableOpacity style={styles.authBackButton} onPress={() => setScreen('home')}>
             <ThemedText type="defaultSemiBold" style={styles.buttonText}>Back</ThemedText>
           </TouchableOpacity>
@@ -1524,7 +1568,7 @@ const sendOtpToEmail = async () => {
                 onRefresh={async () => {
                   setLoadingReports(true);
                   try {
-                    const res = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/upload/all');
+                    const res = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/upload/all');
                     const data = await res.json();
                     setAllReports(data);
                   } catch (err) {
@@ -1642,7 +1686,7 @@ const sendOtpToEmail = async () => {
                         {/* Image (or Placeholder) */}
                         {report.imageUrl ? (
                             <Image
-                            source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `https://8055-183-82-237-45.ngrok-free.app${report.imageUrl}` }}
                             style={{
                                 width: 60,
                                 height: 60,
@@ -1689,10 +1733,19 @@ const sendOtpToEmail = async () => {
               {/* Back Button */}
               <TouchableOpacity
                 style={[styles.authBackButton, { marginTop: 30 }]}
-                onPress={() => setScreen('roleSelection')}
+                onPress={() => {
+                  Alert.alert(
+                    'Confirm Logout',
+                    'Are you sure you want to logout?',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Logout', style: 'destructive', onPress: logout },
+                    ]
+                  );
+                }}
               >
                 <ThemedText type="defaultSemiBold" style={styles.buttonText}>
-                  Back
+                  Logout
                 </ThemedText>
               </TouchableOpacity>
             </View>
@@ -1718,7 +1771,7 @@ const sendOtpToEmail = async () => {
             {/* Image */}
             {selectedReport.imageUrl ? (
               <Image
-                source={{ uri: `https://0653-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `https://8055-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}` }}
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
               />
@@ -1762,13 +1815,13 @@ const sendOtpToEmail = async () => {
                         <p><strong>Summary:</strong> ${selectedReport.summary}</p>
                         <p><strong>Date:</strong> ${new Date(selectedReport.createdAt).toLocaleString('en-IN')}</p>
                         <p><strong>Status:</strong> ${selectedReport.status}</p>
-                        <img src="https://0653-183-82-106-156.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
+                        <img src="https://8055-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}" style="width:100%;max-width:400px;margin-top:20px;" />
                       </body>
                     </html>
                   `;
 
 
-                  const response = await fetch('https://0653-183-82-106-156.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch('https://8055-183-82-237-45.ngrok-free.app/api/generate-pdf', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1807,7 +1860,7 @@ const sendOtpToEmail = async () => {
                 style={[styles.submitButton, { backgroundColor: 'green', marginBottom: 20 }]}
                 onPress={async () => {
                   try {
-                    const res = await fetch(`https://0653-183-82-106-156.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
+                    const res = await fetch(`https://8055-183-82-237-45.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
                     });
