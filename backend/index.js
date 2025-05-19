@@ -473,7 +473,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://55f1-35-245-41-189.ngrok-free.app/analyze';
+    const flaskURL = 'https://1b24-35-231-12-229.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -521,7 +521,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://26c3-183-82-106-156.ngrok-free.app/search', {
+      const geo = await axios.get('https://ce19-113-193-19-90.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
