@@ -80,3 +80,21 @@ thread.start()
 
 # Wait a bit for server to start
 time.sleep(5)
+
+
+
+#####for testing with a single file 
+# from google.colab import files
+# import requests
+
+# # Upload an image from your device
+# uploaded = files.upload()
+# img_path = list(uploaded.keys())[0]
+
+# # Set your ngrok public URL (copy from Cell 2)
+# url = "https://f354-34-80-3-91.ngrok-free.app/analyze"  # Replace this!
+
+# with open(img_path, 'rb') as f:
+#     files = {'image': f}
+#     response = requests.post(url, files=files)
+#     print("🔍 Response:", response.json())
