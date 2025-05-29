@@ -165,7 +165,7 @@ export default function HomeScreen()
     } as any);
 
     console.log('📤 Sending request to Flask server...');
-    const aiResponse = await fetch('https://07ed-74-202-64-188.ngrok-free.app/analyze', {
+    const aiResponse = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/analyze', {
       method: 'POST',
       body: formData,
       headers: {
@@ -253,7 +253,7 @@ export default function HomeScreen()
     }
   
     try {
-      const response = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/auth/login', {
+      const response = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -337,7 +337,7 @@ export default function HomeScreen()
     }
     
     try {
-      const response = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/auth/signup', {
+      const response = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -500,7 +500,7 @@ const sendOtpToEmail = async () => {
   }
 
   try {
-    const res = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/send-otp', { 
+    const res = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/send-otp', { 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -521,7 +521,7 @@ const sendOtpToEmail = async () => {
   // Function to verify OTP
   const verifyOTP = async () => {
     try {
-      const res = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/verify-otp', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp }),
@@ -592,7 +592,7 @@ const sendOtpToEmail = async () => {
         type: 'image/jpeg',
       } as any);
   
-      const analyzeRes = await fetch('https://07ed-74-202-64-188.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/analyze', {
         method: 'POST',
         body: analyzeFormData,
       });
@@ -623,7 +623,7 @@ const sendOtpToEmail = async () => {
       // ✅ Replacing normal fetch here with XHR for progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://07ed-74-202-64-188.ngrok-free.app/api/upload/new');
+        xhr.open('POST', 'https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/upload/new');
   
         xhr.setRequestHeader('Accept', 'application/json');
   
@@ -707,7 +707,7 @@ const sendOtpToEmail = async () => {
     }
 
     try {
-      const res = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/reset-password', {
+      const res = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -729,7 +729,7 @@ const sendOtpToEmail = async () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/upload/all');
+        const res = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/upload/all');
         const data = await res.json();
         setAllReports(data);
       } catch (err) {
@@ -809,7 +809,7 @@ const sendOtpToEmail = async () => {
   const handleDownloadPdf = async () => {
     try {
       // Fetch the PDF URL from your server
-      const response = await fetch('https://07ed-74-202-64-188.ngrok-free.app/generate-pdf', {
+      const response = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/generate-pdf', {
         method: 'POST', // or 'GET', depending on your backend
         headers: {
           'Content-Type': 'application/json',
@@ -838,7 +838,7 @@ const sendOtpToEmail = async () => {
 
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
-      const response = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html, fileName }),
@@ -878,7 +878,7 @@ const sendOtpToEmail = async () => {
           console.warn('User ID not found');
           return;
         }
-        const res = await fetch(`https://07ed-74-202-64-188.ngrok-free.app/api/upload/user/${userId}`);
+        const res = await fetch(`https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/upload/user/${userId}`);
         const data = await res.json();
         setHistoryData(data);
       } catch (error) {
@@ -899,7 +899,7 @@ const sendOtpToEmail = async () => {
   //         'Content-Type': 'application/json',
   //       },
   //       body: JSON.stringify({
-  //         imageUrl: `https://07ed-74-202-64-188.ngrok-free.app${report.imageUrl}`,
+  //         imageUrl: `https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app${report.imageUrl}`,
   //         location: report.location,
   //         summary: report.summary,
   //         date: report.createdAt,
@@ -920,7 +920,7 @@ const sendOtpToEmail = async () => {
   //     if (!res.ok) throw new Error(data.message || 'Failed to send report');
   
   //     Alert.alert('✅ Sent!', 'Report sent to authorities successfully');
-  //   } catch (err) {
+  //   } catch (err) {w
   //     console.error('❌ Send error:', err);
   //     Alert.alert('Error', err.message || 'Something went wrong');
   //   }
@@ -930,7 +930,7 @@ const sendOtpToEmail = async () => {
     try {
         // const res = await fetch('http://localhost:8000/api/receive-report',
           
-          const res = await fetch('http://192.168.0.183:8000/api/receive-report', {
+          const res = await fetch('http://172.26.0.1:8000/api/receive-report', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1068,8 +1068,8 @@ const sendOtpToEmail = async () => {
       )}
 
       {screen === 'forgotPassword' && (
-        <View style={styles.forgotPasswordcontainer}>
-          <View style={styles.forgotPasswordcard}>
+        <View style={styles.forgotPasswordContainer}>
+          <View style={styles.forgotPasswordCard}>
             <Text style={styles.title}>🔐 Enter Your Email</Text>
             <TextInput
               style={styles.loginInput}
@@ -1089,15 +1089,15 @@ const sendOtpToEmail = async () => {
         </View>
       )}
       {screen === 'otpVerification' && (
-        <View style={styles.forgotPasswordcontainer}>
-          <View style={styles.forgotPasswordcard}>
+        <View style={styles.otpVerificationContainer}>
+          <View style={styles.otpVerificationCard}>
             <Text style={styles.title}>🔐 Enter OTP</Text>
 
             <Text style={styles.label}>OTP sent to:</Text>
             <Text style={styles.email}>{email}</Text>
 
             <TextInput
-              style={styles.input}
+              style={styles.loginInput}
               placeholder="Enter OTP"
               keyboardType="numeric"
               onChangeText={setOtp}
@@ -1116,13 +1116,13 @@ const sendOtpToEmail = async () => {
       )}
 
       {screen === 'resetPassword' && (
-        <View style={styles.forgotPasswordcontainer}>
-          <View style={styles.forgotPasswordcard}>
+        <View style={styles.resetPasswordContainer}>
+          <View style={styles.resetPasswordCard}>
             <Text style={styles.title}>🔐 Reset Password</Text>
 
             <Text style={styles.label}>New Password</Text>
             <TextInput
-              style={styles.input}
+              style={styles.loginInput}
               placeholder="Enter new password"
               secureTextEntry={!showPassword}
               onChangeText={setNewPassword}
@@ -1131,7 +1131,7 @@ const sendOtpToEmail = async () => {
 
             <Text style={styles.label}>Confirm Password</Text>
             <TextInput
-              style={styles.input}
+              style={styles.loginInput}
               placeholder="Confirm new password"
               secureTextEntry={!showPassword}
               onChangeText={setConfirmPassword}
@@ -1324,7 +1324,7 @@ const sendOtpToEmail = async () => {
               >
                 {item.imageUrl && (
                   <Image
-                    source={{ uri: `https://07ed-74-202-64-188.ngrok-free.app${item.imageUrl}` }}
+                    source={{ uri: `https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app${item.imageUrl}` }}
                     style={{ width: '100%', height: 180, borderRadius: 10, marginBottom: 10 }}
                   />
                 )}
@@ -1608,7 +1608,7 @@ const sendOtpToEmail = async () => {
                 onRefresh={async () => {
                   setLoadingReports(true);
                   try {
-                    const res = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/upload/all');
+                    const res = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/upload/all');
                     const data = await res.json();
                     setAllReports(data);
                   } catch (err) {
@@ -1726,7 +1726,7 @@ const sendOtpToEmail = async () => {
                         {/* Image (or Placeholder) */}
                         {report.imageUrl ? (
                             <Image
-                            source={{ uri: `https://07ed-74-202-64-188.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app${report.imageUrl}` }}
                             style={{
                                 width: 60,
                                 height: 60,
@@ -1811,7 +1811,7 @@ const sendOtpToEmail = async () => {
             {/* Image */}
             {selectedReport.imageUrl ? (
               <Image
-                source={{ uri: `https://07ed-74-202-64-188.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app${selectedReport.imageUrl}` }}
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
               />
@@ -1879,7 +1879,7 @@ const sendOtpToEmail = async () => {
                         </style>
                       </head>
                       <body>
-                        <img class="image" src="https://07ed-74-202-64-188.ngrok-free.app${selectedReport.imageUrl}" />
+                        <img class="image" src="https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app${selectedReport.imageUrl}" />
                         <div class="heading">Road damage type (identified by transformer)</div>
                         <div class="summary">${selectedReport.summary}</div>
                         <div class="footer">
@@ -1889,7 +1889,7 @@ const sendOtpToEmail = async () => {
                     </html>
                   `;
 
-                  const response = await fetch('https://07ed-74-202-64-188.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/generate-pdf', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1922,24 +1922,33 @@ const sendOtpToEmail = async () => {
             <TouchableOpacity style={styles.button} onPress={() => sendToAuthorities(selectedReport)}>
               <Text style={styles.buttonText}>Send to Authorities</Text>
             </TouchableOpacity>
-            {/* Resolve Button */}
-            {selectedReport.status !== 'Resolved' && (
+            {/* Ignore Button */}
+            {selectedReport.status !== 'Ignored' && (
               <TouchableOpacity
-                style={[styles.submitButton, { backgroundColor: 'green', marginBottom: 20 }]}
+                style={[styles.submitButton, { backgroundColor: 'gray', marginBottom: 20 }]}
                 onPress={async () => {
                   try {
-                    const res = await fetch(`https://07ed-74-202-64-188.ngrok-free.app/api/upload/resolve/${selectedReport._id}`, {
+                    const res = await fetch(`https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/api/upload/ignore/${selectedReport._id}`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
                     });
 
-                    const data = await res.json();
+                    const contentType = res.headers.get('content-type') || '';
+                    let data;
+                    if (contentType.includes('application/json')) {
+                      data = await res.json();
+                    } else {
+                      const text = await res.text();
+                      console.warn('Non-JSON response:', text);
+                      data = null;
+                    }
+
                     if (res.ok) {
-                      alert('Report marked as Resolved ✅');
+                      alert('Report marked as Ignored ✅');
                       setScreen('supervisorDashboard');
                       setSelectedReport(null);
                     } else {
-                      alert('Failed to mark as Resolved ❌');
+                      alert('Failed to mark as Ignored ❌');
                     }
                   } catch (error) {
                     console.error(error);
@@ -1947,7 +1956,7 @@ const sendOtpToEmail = async () => {
                   }
                 }}
               >
-                <ThemedText type="defaultSemiBold" style={styles.buttonText}>Mark as Resolved</ThemedText>
+                <ThemedText type="defaultSemiBold" style={styles.buttonText}>Ignore</ThemedText>
               </TouchableOpacity>
             )}
             {/* Back Button */}
@@ -2028,8 +2037,12 @@ const styles = StyleSheet.create({
   toggle: { color: '#38bdf8', textAlign: 'right', marginBottom: 20,},
   homeInnerContainer: {alignItems: 'center',justifyContent: 'center', width: '100%', padding: 20,},
   loginContainer: {flex: 1,alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingTop: 60,},
-  forgotPasswordcontainer: {flex: 1,alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingTop: 60,},
-  forgotPasswordcard:{shadowColor: '#000',backgroundColor: 'rgba(0, 0, 0, 0.7)', width: '100%', maxWidth: 400, shadowRadius: 10, padding: 24, borderRadius: 16,  elevation: 5,shadowOpacity: 0.1, shadowOffset: { width: 0, height: 2 },},
+  forgotPasswordContainer: {flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingTop: 60,},
+  forgotPasswordCard: {shadowColor: '#000', backgroundColor: 'rgba(0, 0, 0, 0.7)', width: '90%', maxWidth: 400, shadowRadius: 10, padding: 20, borderRadius: 15, elevation: 5, shadowOpacity: 0.1, shadowOffset: { width: 0, height: 2 },},
+  resetPasswordContainer: {flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingTop: 60,},
+  resetPasswordCard: {shadowColor: '#000', backgroundColor: 'rgba(0, 0, 0, 0.7)', width: '90%', maxWidth: 400, shadowRadius: 10, padding: 24, borderRadius: 16, elevation: 5, shadowOpacity: 0.1, shadowOffset: { width: 0, height: 2 },},
+  otpVerificationContainer: {flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingTop: 60,},
+  otpVerificationCard: {shadowColor: '#000', backgroundColor: 'rgba(0, 0, 0, 0.7)', width: '90%', maxWidth: 400, shadowRadius: 10, padding: 24, borderRadius: 16, elevation: 5, shadowOpacity: 0.1, shadowOffset: { width: 0, height: 2 },},
   recentReportsBox: { backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: 15, marginVertical: 20,marginHorizontal: 10, borderRadius: 10, shadowColor: '#000',  shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3, },
   mapContainer: { height: 300, width: '100%', backgroundColor: 'white', borderRadius: 20, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 5, elevation: 5, marginTop: 20, marginBottom: 20, alignSelf: 'center',},
   mapContainersuper: { marginTop: 20, width: '100%', alignItems: 'center',},
@@ -2052,7 +2065,7 @@ const styles = StyleSheet.create({
   //   fontSize: 16,
   //   color: 'black',
   // },
-  input: { flex: 1, height: 50, paddingHorizontal: 15, fontSize: 16, color: 'black', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#ccc', marginBottom: 15,},  
+  input: { flex: 1, height: 70, paddingHorizontal: 15, fontSize: 16, color: 'black', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#ccc', marginBottom: 15,},  
   eyeButton: { padding: 10,},
   eyeText: { fontSize: 20,},
   signupScrollContainer: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 30,},

@@ -70,6 +70,8 @@ app.post('/api/send-otp', async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     otpStore[email] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 };
 
+    console.log('GMAIL_PASS value:', JSON.stringify(process.env.GMAIL_PASS));
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -81,13 +83,17 @@ app.post('/api/send-otp', async (req, res) => {
     console.log("🧪 GMAIL_USER:", process.env.GMAIL_USER);
     console.log("🧪 GMAIL_PASS set?", process.env.GMAIL_PASS ? "Yes" : "No");
 
-
-    await transporter.sendMail({
-      from: 'SafeStreet <safestreet3@gmail.com>',
-      to: email,
-      subject: 'Your OTP for SafeStreet Password Reset',
-      text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
-    });
+    try {
+      await transporter.sendMail({
+        from: 'SafeStreet <authoritysafestreet@gmail.com>',
+        to: email,
+        subject: 'Your OTP for SafeStreet Password Reset',
+        text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
+      });
+    } catch (sendError) {
+      console.error('Nodemailer sendMail error:', sendError);
+      return res.status(500).json({ error: 'Failed to send OTP.', details: sendError.message });
+    }
 
     res.json({ message: 'OTP sent successfully.' });
   } catch (error) {
@@ -118,7 +124,7 @@ app.post('/api/reset-password', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: 'User not found.' });
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    user.password = newPassword;
     await user.save();
 
     delete otpStore[email];
@@ -137,7 +143,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://f354-34-80-3-91.ngrok-free.app/analyze';
+    const flaskURL = 'https://8393-34-169-91-49.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -185,7 +191,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://07ed-74-202-64-188.ngrok-free.app/search', {
+      const geo = await axios.get('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
@@ -243,6 +249,23 @@ app.put('/api/upload/resolve/:id', async (req, res) => {
     res.json({ message: 'Report marked as resolved ✅' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to resolve report' });
+  }
+});
+
+// --- Mark Upload as Ignored ---
+app.put('/api/upload/ignore/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const upload = await Upload.findById(id);
+
+    if (!upload) return res.status(404).json({ error: 'Report not found' });
+
+    upload.status = 'Ignored';
+    await upload.save();
+    res.json({ message: 'Report marked as ignored ✅' });
+  } catch (error) {
+    console.error('Failed to ignore report:', error);
+    res.status(500).json({ error: 'Failed to ignore report', details: error.message });
   }
 });
 
