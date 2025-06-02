@@ -1,4 +1,4 @@
-!pip install flask pyngrok transformers torch torchvision pillow -q
+#!pip install flask pyngrok transformers torch torchvision pillow -q
 import os
 import io
 import time
@@ -49,6 +49,26 @@ def analyze():
     file = request.files['image']
     try:
         image = Image.open(io.BytesIO(file.read())).convert("RGB")
+
+        # First, check if the image is of a road
+        road_labels = ["a road", "a street", "a highway", "a paved road", "an asphalt road", "not a road"]
+        road_inputs = processor(text=road_labels, images=image, return_tensors="pt", padding=True).to(device)
+
+        with torch.no_grad():
+            road_outputs = model(**road_inputs)
+            road_probs = road_outputs.logits_per_image.softmax(dim=1).squeeze()
+
+        is_road_confidence = sum(road_probs[i].item() for i in range(len(road_labels) - 1))  # sum of road-related labels
+        not_road_confidence = road_probs[-1].item()
+
+        if is_road_confidence < 0.5:  # Lowered threshold to 0.5
+            return jsonify({
+                'label': "Unrelated image",
+                'summary': "The uploaded image does not appear to be of a road.",
+                'confidence': f"{is_road_confidence:.2f}"
+            })
+
+        # Now do the actual road damage classification
         inputs = processor(text=labels, images=image, return_tensors="pt", padding=True).to(device)
 
         with torch.no_grad():

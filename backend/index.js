@@ -143,7 +143,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://8393-34-169-91-49.ngrok-free.app/analyze';
+    const flaskURL = 'https://aa7e-34-74-55-181.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -157,9 +157,9 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
 
     await newSummary.save();
 
-    fs.unlink(req.file.path, err => {
-      if (err) console.error('Error deleting file:', err);
-    });
+    // fs.unlink(req.file.path, err => {
+    //   if (err) console.error('Error deleting file:', err);
+    // });
 
     res.json({
       message: 'Analysis successful!',
@@ -191,7 +191,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/search', {
+      const geo = await axios.get('https://3a14-183-82-237-45.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });

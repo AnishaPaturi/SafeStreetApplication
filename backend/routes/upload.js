@@ -37,9 +37,9 @@ router.post('/new', upload.single('image'), async (req, res) => {
     console.log('✅ Summary saved successfully');
 
     // Clean up temporary uploaded file
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.error('Failed to delete uploaded file:', err);
-    });
+    // fs.unlink(req.file.path, (err) => {
+    //   if (err) console.error('Failed to delete uploaded file:', err);
+    // });
 
     res.status(201).json({
       message: 'Upload successful!',
