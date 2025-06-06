@@ -20,12 +20,12 @@ export default function ChatbotIcon() {
     setInput('');
 
     try {
-      const res = await fetch('http://192.168.157.177:5000/api/chat', {
+      const res = await fetch('http://192.168.28.177:5000/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: input }),
       });
-
+ 
       const data = await res.json();
       setMessages((prev) => [...prev, { from: 'bot', text: data.answer || 'No response' }]);
     } catch (err) {

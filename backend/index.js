@@ -38,11 +38,6 @@ app.use('/pdfs', express.static(path.join(__dirname, 'pdfs')));
 // --- In-Memory Store for OTPs ---
 let otpStore = {};
 
-// --- MongoDB Connection ---
-// mongoose.connect(process.env.MONGO_URI)
-//   .then(() => console.log('✅ MongoDB connected'))
-//   .catch(err => console.error('❌ MongoDB connection error:', err));
-
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -143,7 +138,7 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
     const form = new FormData();
     form.append('image', fs.createReadStream(req.file.path));
 
-    const flaskURL = 'https://8393-34-169-91-49.ngrok-free.app/analyze';
+    const flaskURL = 'https://e768-34-147-1-104.ngrok-free.app/analyze';
     const response = await axios.post(flaskURL, form, {
       headers: { ...form.getHeaders() },
     });
@@ -157,9 +152,6 @@ app.post('/analyze', upload.single('image'), async (req, res) => {
 
     await newSummary.save();
 
-    fs.unlink(req.file.path, err => {
-      if (err) console.error('Error deleting file:', err);
-    });
 
     res.json({
       message: 'Analysis successful!',
@@ -191,7 +183,7 @@ app.post('/api/upload/new', upload.single('image'), async (req, res) => {
     let longitude = null;
 
     try {
-      const geo = await axios.get('https://944e-2409-40f0-102a-8025-1943-7cdf-947c-36f7.ngrok-free.app/search', {
+      const geo = await axios.get('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/search', {
         params: { q: location, format: 'json', limit: 1 },
         headers: { 'User-Agent': 'SafeStreetApp/1.0 (youremail@example.com)' }
       });
@@ -280,8 +272,6 @@ app.get('/api/upload/user/:userId', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user uploads' });
   }
 });
-
-
 
 // --- Generate PDF ---
 app.post('/api/generate-pdf', async (req, res) => {
