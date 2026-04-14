@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: safestreet-flask-ai
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn summary:app
+    envVars:
+      - key: PORT
+        value: 5000
+
+  - type: web
+    name: safestreet-node-api
+    env: node
+    buildCommand: npm install && cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        value: "ENTER_YOUR_MONGODB_URI_HERE"

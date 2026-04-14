@@ -1,22 +1,16 @@
-#!pip install flask pyngrok transformers torch torchvision pillow -q
+# Removed ngrok installation comment
 import os
 import io
 import time
-import threading
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from PIL import Image
 import torch
 from transformers import CLIPProcessor, CLIPModel
-from pyngrok import ngrok, conf
-
-# Set ngrok auth token
-conf.get_default().auth_token = "2wbtqVs3HMZ30vRPHOaEXCoCl1N_6fECZVixiuLq7YF7bchYY"
-
-# Kill any previous tunnels
-ngrok.kill()
 
 # Start Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Load model
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -88,19 +82,9 @@ def analyze():
     except Exception as e:
         return jsonify({'error': 'Failed to analyze image', 'details': str(e)}), 500
 
-# Start server with ngrok
-public_url = ngrok.connect(5000)
-print("🚀 Public URL:", public_url)
-
-def run_app():
-    app.run(host="0.0.0.0", port=5000)
-
-thread = threading.Thread(target=run_app)
-thread.start()
-
-# Wait a bit for server to start
-time.sleep(5)
-
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 #####for testing with a single file 
