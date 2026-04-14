@@ -92,10 +92,14 @@ To run the project, you must set up your backend servers and tunnel them locally
    ```
 
 ### 4. Run the Application
-Start the Expo server, and scan the QR code via the Expo Go app. 
-```bash
-npm start
-```
+You will need **three terminal windows** open simultaneously to run the full stack:
+1. One running the **Node API** (`npm start` inside `backend/`).
+2. One running the **Flask AI Service** (`python summary.py` inside `backend/`).
+3. One running the **React Native App**:
+   ```bash
+   npx expo start
+   ```
+*(Scan the QR code printed in the terminal via the Expo Go app on your iOS/Android device!)*
 
 ---
 
@@ -105,6 +109,11 @@ SafeStreet is engineered to bridge the gap between public reporting and local go
 - **Crowdsourced Verification**: Enabling citizens to verify ("upvote") reported road damage for algorithmic priority escalation.
 - **Live GPS Tracking & Clustering**: Map visualizations showing geographic hotspots of infrastructure degradation.
 - **Automated Dashboard Alerts**: SMS/Email push hooks for immediate dispatch capabilities to municipal response teams.
+
+---
+
+## 👨‍💻 Authors
+- **Anisha Paturi** - *Initial Work & Development* - [AnishaPaturi](https://github.com/AnishaPaturi)
 
 ---
 > *SafeStreet — Engineering smarter, safer infrastructure through AI.*
