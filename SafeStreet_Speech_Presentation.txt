@@ -1,0 +1,30 @@
+Good [morning/afternoon/evening] everyone,
+
+Today, I am excited to present to you SafeStreet, an innovative mobile and web application designed to make our roads safer by empowering users to report and track road damages efficiently.
+
+SafeStreet addresses a critical issue faced by many communities: the timely identification and reporting of road hazards such as potholes and damaged infrastructure. Our app enables users to capture images of road damage, automatically analyze the images using AI, and submit detailed reports to local authorities for prompt action.
+
+Let me walk you through the key features of SafeStreet:
+
+1. User Roles and Authentication  
+SafeStreet supports two main user roles: regular users and supervisors. Users can sign up, log in, and manage their profiles securely. Supervisors have access to a dashboard where they can review reports and monitor road safety issues.
+
+2. Image Upload and AI Analysis  
+Users can upload images of road damage either by taking a photo or selecting one from their device. The app integrates with an AI-powered backend service that analyzes the image to generate a summary of the damage, helping to standardize and speed up the reporting process.
+
+3. Location Tracking and Manual Input  
+The app automatically captures the user's location when submitting a report, but also allows manual location entry or selection on a map for accuracy and flexibility.
+
+4. Report Management and History  
+Users can view their report history, while supervisors can access all reports, filter by status, and mark reports as resolved or ignored. This ensures efficient tracking and resolution of road safety issues.
+
+5. PDF Generation and Sharing  
+SafeStreet can generate detailed PDF summaries of reports, which can be downloaded or shared with authorities, enhancing transparency and documentation.
+
+From a technical perspective, the backend is built with Node.js and Express, connected to a MongoDB database for storing user data, reports, and summaries. It handles authentication, image uploads, AI analysis requests, and PDF generation.
+
+The frontend is developed using React Native with Expo, providing a smooth and responsive user experience across devices. It features intuitive navigation, animated transitions, and integration with device capabilities like camera and location services.
+
+In summary, SafeStreet leverages modern technologies to empower communities in improving road safety through easy reporting and efficient management. It bridges the gap between citizens and authorities, fostering collaboration for safer streets.
+
+Thank you for your attention. I am happy to answer any questions you may have.
