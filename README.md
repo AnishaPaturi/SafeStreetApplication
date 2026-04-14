@@ -1,54 +1,92 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <h1>🚦 Safe-Street</h1>
+  <p><b>AI-powered Damage Detection & Road Maintenance Application</b></p>
+  
+  ![React Native](https://img.shields.io/badge/React%20Native-000000?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+  ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+  ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+</div>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+## 🌟 Overview
+**SafeStreet** streamlines road maintenance by leveraging modern mobile technology and Artificial Intelligence. The platform features an intuitive mobile application for field reporting, integrating an advanced ViT (Vision Transformer) model to classify damage and assess severity. It provides authorities with an interactive dashboard, automatic email reporting, and AI-generated insights via a seamless modern architecture.
 
-1. Install dependencies
+## 🚀 Key Features
+- **Intelligent Damage Detection**: Native ViT machine learning models automatically evaluate uploaded road conditions.
+- **Cross-Platform Mobile Application**: Robust reporting interface allowing users to upload images and automatically geolocate issues.
+- **Automated Summaries**: Python-backed analysis generates damage summaries and pushes alerts to supervisors.
+- **Comprehensive Dashboard**: View outstanding reports, download automatically generated PDFs, and manage resolutions.
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Technology Stack
+* **Frontend**: React Native, Expo, React Navigation
+* **Mobile API (Backend)**: Express.js, Node.js, MongoDB, Mongoose
+* **Machine Learning API**: Python, Flask, PyTorch, Transformers
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## 💻 Getting Started
 
-In the output, you'll find options to open the app in a
+Follow these steps to set up the project locally on your machine.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 1. Prerequisites
+- Node.js
+- Python 3.9+
+- Expo CLI
+- Ngrok (or any local tunneling software)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 2. Local Installation
 
-## Get a fresh project
-
-When you're ready, run:
+Clone the repository and install dependencies for both the frontend and backend:
 
 ```bash
-npm run reset-project
+# Install frontend dependencies
+npm install
+
+# Navigate to backend and install Node dependencies
+cd backend
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3. Environment Configuration
+To run the project, you must set up your backend servers and tunnel them to the web. The application is completely centralized to pull configuration strictly from `app.config.js`.
 
-## Learn more
+1. **Start the Node Server**:
+   ```bash
+   cd backend
+   npm start
+   ```
+2. **Start the Flask AI Service**:
+   ```bash
+   cd backend
+   python summary.py
+   ```
+3. **Tunneling**: 
+   Since the React Native app requires access to your local machine, use `ngrok` to expose both services:
+   ```bash
+   ngrok http 5000 # For Flask App
+   ngrok http 3000 # For Node server
+   ```
 
-To learn more about developing your project with Expo, look at the following resources:
+4. **Update `app.config.js`**:
+   Copy the `ngrok-free.app` URLs from your tunnels and paste them directly into your frontend configuration:
+   ```javascript
+   export default {
+     expo: {
+       extra: {
+         MOBILE_API_URL: 'https://<your-node-ngrok>.ngrok-free.app',
+         FLASK_API_URL: 'https://<your-flask-ngrok>.ngrok-free.app'
+       }
+     }
+   }
+   ```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 4. Run the Application
+Start the Expo server and scan the QR code to test on your phone.
+```bash
+npm start
+```
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-
-# Safe-Street
-SafeStreet streamlines road maintenance with AI-powered damage detection. Its mobile app enables image uploads, analyzed by a ViT model to classify damage and assess severity. The system generates a summary, shares it via email, and provides insights via a MERN-based web platform for authorities.
-
+---
+> *Safe-Street is an ongoing project engineered to modernize infrastructure management.*
