@@ -2,6 +2,7 @@ services:
   - type: web
     name: safestreet-flask-ai
     env: python
+    plan: free
     buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && gunicorn summary:app
     envVars:
@@ -11,6 +12,7 @@ services:
   - type: web
     name: safestreet-node-api
     env: node
+    plan: free
     buildCommand: npm install && cd backend && npm install
     startCommand: cd backend && node server.js
     envVars:
