@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Constants from 'expo-constants';
 import {
   Image,
   StyleSheet,
@@ -168,7 +169,7 @@ export default function HomeScreen()
 
    
 
-    const aiResponse = await fetch('https://3a14-183-82-237-45.ngrok-free.app/analyze', {
+    const aiResponse = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/analyze`, {
 
       method: 'POST',
       body: formData,
@@ -258,9 +259,9 @@ export default function HomeScreen()
   
     try {
 
-      const response = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/auth/login', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/auth/login`, {
 
-      const response = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/auth/login', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/auth/login`, {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -346,9 +347,9 @@ export default function HomeScreen()
     
     try {
 
-      const response = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/auth/signup', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/auth/signup`, {
 
-      const response = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/auth/signup', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/auth/signup`, {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -513,9 +514,9 @@ const sendOtpToEmail = async () => {
 
   try {
 
-    const res = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/send-otp', { 
+    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/send-otp`, { 
 
-    const res = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/send-otp', { 
+    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/send-otp`, { 
 
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -538,9 +539,9 @@ const sendOtpToEmail = async () => {
   const verifyOTP = async () => {
     try {
 
-      const res = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/verify-otp`, { 
 
-      const res = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/verify-otp', { 
+      const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/verify-otp`, { 
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -613,9 +614,9 @@ const sendOtpToEmail = async () => {
       } as any);
   
 
-      const analyzeRes = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/analyze`, {
 
-      const analyzeRes = await fetch('https://3a14-183-82-237-45.ngrok-free.app/analyze', {
+      const analyzeRes = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/analyze`, {
 
         method: 'POST',
         body: analyzeFormData,
@@ -648,9 +649,9 @@ const sendOtpToEmail = async () => {
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
-        xhr.open('POST', 'https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/upload/new');
+        xhr.open('POST', `${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/new`);
 
-        xhr.open('POST', 'https://3a14-183-82-237-45.ngrok-free.app/api/upload/new');
+        xhr.open('POST', `${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/new`);
 
   
         xhr.setRequestHeader('Accept', 'application/json');
@@ -736,9 +737,9 @@ const sendOtpToEmail = async () => {
 
     try {
 
-      const res = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/reset-password', {
+      const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/reset-password`, {
 
-      const res = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/reset-password', {
+      const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/reset-password`, {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -762,9 +763,9 @@ const sendOtpToEmail = async () => {
     const fetchReports = async () => {
       try {
 
-        const res = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/upload/all');
+        const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/all`);
 
-        const res = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/upload/all');
+        const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/all`);
 
         const data = await res.json();
         setAllReports(data);
@@ -846,9 +847,9 @@ const sendOtpToEmail = async () => {
     try {
       // Fetch the PDF URL from your server
 
-      const response = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/generate-pdf', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/generate-pdf`, {
 
-      const response = await fetch('https://3a14-183-82-237-45.ngrok-free.app/generate-pdf', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/generate-pdf`, {
 
         method: 'POST', // or 'GET', depending on your backend
         headers: {
@@ -879,9 +880,9 @@ const sendOtpToEmail = async () => {
   const generateAndOpenPdf = async (html: string, fileName: string): Promise<void> => {
     try {
 
-      const response = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/generate-pdf`, {
 
-      const response = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/generate-pdf', {
+      const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/generate-pdf`, {
 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -923,9 +924,9 @@ const sendOtpToEmail = async () => {
           return;
         }
 
-        const res = await fetch(`https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/upload/user/${userId}`);
+        const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/user/${userId}`);
 
-        const res = await fetch(`https://3a14-183-82-237-45.ngrok-free.app/api/upload/user/${userId}`);
+        const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/user/${userId}`);
 
         const data = await res.json();
         setHistoryData(data);
@@ -948,9 +949,9 @@ const sendOtpToEmail = async () => {
   //       },
   //       body: JSON.stringify({
 
-  //         imageUrl: `https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app${report.imageUrl}`,
+  //         imageUrl: `${Constants.expoConfig.extra.MOBILE_API_URL}${report.imageUrl}`,
 
-  //         imageUrl: `https://3a14-183-82-237-45.ngrok-free.app${report.imageUrl}`,
+  //         imageUrl: `${Constants.expoConfig.extra.MOBILE_API_URL}${report.imageUrl}`,
 
   //         location: report.location,
   //         summary: report.summary,
@@ -1385,9 +1386,9 @@ const sendOtpToEmail = async () => {
                 {item.imageUrl && (
                   <Image
 
-                    source={{ uri: `https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app${item.imageUrl}` }}
+                    source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${item.imageUrl}` }}
 
-                    source={{ uri: `https://3a14-183-82-237-45.ngrok-free.app${item.imageUrl}` }}
+                    source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${item.imageUrl}` }}
 
                     style={{ width: '100%', height: 180, borderRadius: 10, marginBottom: 10 }}
                     onError={(e) => console.log('Image load error:', e.nativeEvent.error)}
@@ -1674,9 +1675,9 @@ const sendOtpToEmail = async () => {
                   setLoadingReports(true);
                   try {
 
-                    const res = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/upload/all');
+                    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/all`);
 
-                    const res = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/upload/all');
+                    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/all`);
 
                     const data = await res.json();
                     setAllReports(data);
@@ -1796,9 +1797,9 @@ const sendOtpToEmail = async () => {
                         {report.imageUrl ? (
                             <Image
 
-                            source={{ uri: `https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${report.imageUrl}` }}
 
-                            source={{ uri: `https://3a14-183-82-237-45.ngrok-free.app${report.imageUrl}` }}
+                            source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${report.imageUrl}` }}
 
                             style={{
                                 width: 60,
@@ -1886,9 +1887,9 @@ const sendOtpToEmail = async () => {
             {selectedReport.imageUrl ? (
               <Image
 
-                source={{ uri: `https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${selectedReport.imageUrl}` }}
 
-                source={{ uri: `https://3a14-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}` }}
+                source={{ uri: `${Constants.expoConfig.extra.MOBILE_API_URL}${selectedReport.imageUrl}` }}
 
                 style={{ width: 250, height: 250, borderRadius: 15, marginBottom: 20 }}
                 resizeMode="cover"
@@ -1963,7 +1964,7 @@ const sendOtpToEmail = async () => {
                         <div class="details">
                           <p>This report highlights damage at ${location}. Summary: ${summary}. Status: ${status}.</p>
 
-                        <img class="image" src="https://3a14-183-82-237-45.ngrok-free.app${selectedReport.imageUrl}" />
+                        <img class="image" src=`${Constants.expoConfig.extra.MOBILE_API_URL}${selectedReport.imageUrl}` />
                         <div class="heading">Road damage type (identified by transformer)</div>
                         <div class="summary">${selectedReport.summary}</div>
                         <div class="footer">
@@ -1975,9 +1976,9 @@ const sendOtpToEmail = async () => {
                   `;
 
 
-                  const response = await fetch('https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/generate-pdf`, {
 
-                  const response = await fetch('https://3a14-183-82-237-45.ngrok-free.app/api/generate-pdf', {
+                  const response = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/generate-pdf`, {
 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2018,9 +2019,9 @@ const sendOtpToEmail = async () => {
                 onPress={async () => {
                   try {
 
-                    const res = await fetch(`https://e35c-2409-40f0-124-c76b-39a1-e8da-bd91-927e.ngrok-free.app/api/upload/ignore/${selectedReport._id}`, {
+                    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/ignore/${selectedReport._id}`, {
 
-                    const res = await fetch(`https://3a14-183-82-237-45.ngrok-free.app/api/upload/ignore/${selectedReport._id}`, {
+                    const res = await fetch(`${Constants.expoConfig.extra.MOBILE_API_URL}/api/upload/ignore/${selectedReport._id}`, {
 
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
